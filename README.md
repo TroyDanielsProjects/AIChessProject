@@ -2,6 +2,8 @@ AIChessProject
 
 Troy Daniels AI Project
 
+See PDF for more Information
+
 Chess: This chess game is implemented with all rules except en passant. All pieces move as they should. Any illegal move will be prevented by the game including anytime a player is in check. Pawns get promoted automatically as queens when they reach the enemies last row. Castling is enabled with all constraints. To start a game choose the file with the opponent you wish to play and run that file. Your options are HumanVsHuman, HumanVsMinimax (really alpha-beta player) and HumanVsRL. To play the RL, there is a parameter where the RL player is initialized that is the name of a file containing trained weights (string). Enter the correct file of weights you wish to play. Each file will be explained further below. To make a move look at the coordinates of each location. The rows are labeled by numbers and columns by letters. After the game starts input the location of the piece you wish to move ( letter then number ) followed by the location you wish to move the piece with no space in-between (letter then number). Chess is a particularly hard game for AI players because of the extremely large state space and the complexity of the game. In class we mentioned that the average branching factor for chess is around 35. This causes the alpha-beta player’s runtime to grow very fast as the depth increases. As for the reinforcement learner, it will take a very long time to explore all of these states causing a slow convergence. The complexity of the game also makes it hard for a value function or features to represent a good state.
 
 Alpha-Beta:
