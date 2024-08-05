@@ -1,9 +1,16 @@
-
-
+package Pieces;
 import java.util.ArrayList;
+import Pieces.Piece;
 
+
+/*
+ * Class that represents a Pawn Piece and its movements
+ */
 public class Queen extends Piece{
-
+	
+	/*
+	 * Constructor for Queen
+	 */
 	public Queen(boolean isWhite, int[] currLocation,Piece[][] board) {
 		super.isWhite = isWhite;
 		super.name = "Q";
@@ -12,6 +19,10 @@ public class Queen extends Piece{
 		super.board = board;
 	}
 	
+	/*
+	 * Override method to set what movements are possible for the Queen. Only looks at movement
+	 * and not circumstance (for example if pieces block movement)
+	 */
 	public boolean legalMove(int[] prevLoc, int[] nextLoc) {
 		boolean isLegal = false;
 		if (board[prevLoc[0]][prevLoc[1]]==null) {
@@ -32,8 +43,10 @@ public class Queen extends Piece{
 		return isLegal;
 	}
 	
-
-	@Override
+	/*
+	 * Checks to see if a piece exists between original position and where it moved to.
+	 * Making it a illegal move (boolean - true = illegal move)
+	 */
 	public boolean isBlocked(int[] prevLoc, int[] nextLoc) {
 		
 		int[] tempLoc = nextLoc.clone();
@@ -104,7 +117,9 @@ public class Queen extends Piece{
 	}
 	
 	
-	@Override
+	/*
+	 * Finds all possible legal moves
+	 */
 	public ArrayList<int[][]> possibleMoveLocations() {
 		ArrayList<int[][]> possMoves = new ArrayList<int[][]>();
 		int currRow = this.location[0]+1;

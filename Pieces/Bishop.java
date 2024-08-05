@@ -1,8 +1,15 @@
-
+package Pieces;
 import java.util.ArrayList;
 
+/*
+ *  A class representing a bishop piece. Functionality of possible moves / allowed moves.
+ */
 public class Bishop extends Piece{
 	
+	/*
+	 * constructor to create a bishop piece. Needs to know if it is white or black, starting location
+	 * and a reference to the board
+	 */
 	public Bishop(boolean isWhite, int[] currLocation,Piece[][] board) {
 		super.isWhite = isWhite;
 		super.name = "B";
@@ -11,7 +18,10 @@ public class Bishop extends Piece{
 		super.board = board;
 	}
 
-	@Override
+	/*
+	 * Override method to set what movements are possible for the bishop. Only looks at movement (is move true diagonal)
+	 * and not circumstance (for example if pieces block movement)
+	 */
 	public boolean legalMove(int[] prevLoc, int[] nextLoc) {
 		boolean isLegal = false;
 		if (board[prevLoc[0]][prevLoc[1]]==null) {
@@ -32,7 +42,10 @@ public class Bishop extends Piece{
 		return isLegal;
 	}
 	
-	
+	/*
+	 * Checks to see if a piece exists between original position and where it moved to.
+	 * Making it a illegal move (boolean - true = illegal move)
+	 */
 	public boolean isBlocked(int[] prevLoc, int[] nextLoc) {
 		int[] tempLoc = nextLoc.clone();
 		if ( nextLoc[0]-prevLoc[0]>0 && nextLoc[1]-prevLoc[1]>0 ) {
@@ -75,6 +88,9 @@ public class Bishop extends Piece{
 		return false;
 	}
 
+	/*
+	 * Look at every possible move and return a list of legal moves
+	 */
 	public ArrayList<int[][]> possibleMoveLocations() {
 		ArrayList<int[][]> possMoves = new ArrayList<int[][]>();
 		int currRow = this.location[0]+1;

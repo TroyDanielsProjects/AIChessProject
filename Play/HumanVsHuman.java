@@ -1,5 +1,12 @@
+package Play;
+import Game.Board;
+import Players.Player;
+import Game.Chess;
+import Players.HumanPlayer;
 
-
+/*
+ * run class to start a game between two human players
+ */
 public class HumanVsHuman {
 
 	public static void main(String[] args) {

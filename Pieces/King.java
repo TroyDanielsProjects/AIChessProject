@@ -1,7 +1,11 @@
-
+package Pieces;
+import Game.Board;
 
 import java.util.ArrayList;
 
+/*
+ * Class that represents the King Piece and its movements
+ */
 public class King extends Piece {
 	
 	public boolean canCastleKingSide;
@@ -19,6 +23,9 @@ public class King extends Piece {
 		this.currBoard = currBoard;
 	}
 	
+	/*
+	 * Checks to see if move is legal, also checks for Castle maneuver 
+	 */
 	public boolean legalMove(int[] prevLoc, int[] nextLoc) {
 		boolean isLegal = false;
 		if (board[prevLoc[0]][prevLoc[1]]==null) {
@@ -51,19 +58,29 @@ public class King extends Piece {
 		return isLegal;
 	}
 	
+	/*
+	 * Helper method to determine if Castle maneuver is legal
+	 */
 	public boolean kingCastle(int[] prevLoc, int[] nextLoc) {
 		boolean isLegal = false;
-		if (canCastleKingSide && board[prevLoc[0]][prevLoc[1]-1]==null && board[prevLoc[0]][prevLoc[1]-2]==null && !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]-1}) && !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]-2}) ) {
+		if (canCastleKingSide && board[prevLoc[0]][prevLoc[1]-1]==null && board[prevLoc[0]][prevLoc[1]-2]==null 
+				&& !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]-1}) 
+				&& !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]-2})){
 			isLegal = true;
 		}
-		else if (nextLoc[1]==5 && canCastleQueenSide && board[prevLoc[0]][prevLoc[1]+1]==null && board[prevLoc[0]][prevLoc[1]+2]==null && board[prevLoc[0]][prevLoc[1]+3]==null && !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]+1}) && !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]+2}) && !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]+3}) ) {
+		else if (nextLoc[1]==5 && canCastleQueenSide && board[prevLoc[0]][prevLoc[1]+1]==null && board[prevLoc[0]][prevLoc[1]+2]==null 
+				&& board[prevLoc[0]][prevLoc[1]+3]==null && !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]+1}) 
+				&& !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]+2}) 
+				&& !currBoard.isSquareBeingAttacked(this.isWhite, new int[] {prevLoc[0],prevLoc[1]+3})){
 			isLegal = true;
 		}
 		return isLegal;
 
 	}
 	
-	
+	/*
+	 * Checks to see if a capture move is legal
+	 */
 	public boolean legalAttack(int[] nextLoc) {
 		boolean isLegal = false;
 		int[] prevLoc = this.location;
@@ -86,15 +103,19 @@ public class King extends Piece {
 	}
 	
 
-	@Override
+	/*
+	 * Checks to see if the location it is trying to move to is blocked by another piece
+	 */
 	public boolean isBlocked(int[] prevLoc, int[] nextLoc) {
 		if ( (nextLoc[1]==1 && prevLoc[1]==3) || (nextLoc[1]==5 && prevLoc[1]==3) ) {
 			return kingCastle(prevLoc, nextLoc);
 		}
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
+	/*
+	 * moves the King's location
+	 */
 	public void move(int[] newPosition) {
 		this.location = newPosition;
 		this.canCastleKingSide = false;
@@ -102,8 +123,9 @@ public class King extends Piece {
 	}
 	
 	
-	// need to add castle possibility
-	@Override
+	/*
+	 * Finds all possible legal moves
+	 */
 	public ArrayList<int[][]> possibleMoveLocations() {
 		ArrayList<int[][]> possMoves = new ArrayList<int[][]>();
 		int[][] kingSideCastle = {this.location,{this.location[0],1}}; 

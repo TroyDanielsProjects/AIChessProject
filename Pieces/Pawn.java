@@ -1,11 +1,20 @@
-
-
+package Pieces;
 import java.util.ArrayList;
+import Pieces.Piece;
 
+/*
+ * Class that represents a Pawn Piece and its movements
+ */
 public class Pawn extends Piece{
 	
-	 boolean notMoved = true;
+	/*
+	 * for starting 2 length move
+	 */
+	boolean notMoved = true;
 	
+	/*
+	 * Constructor for Pawn
+	 */
 	public Pawn(boolean isWhite, int[] currLocation,Piece[][] board) {
 		super.isWhite = isWhite;
 		super.name = "P";
@@ -14,7 +23,10 @@ public class Pawn extends Piece{
 		super.board = board;
 	}
 
-	@Override
+	/*
+	 * Override method to set what movements are possible for the Pawn. Only looks at movement
+	 * and not circumstance (for example if pieces block movement)
+	 */
 	public boolean legalMove(int[] prevLoc, int[] nextLoc) {
 		boolean isLegal = false;
 		if (board[prevLoc[0]][prevLoc[1]]==null) {
@@ -47,11 +59,17 @@ public class Pawn extends Piece{
 		return isLegal;
 	}
 	
+	/*
+	 * Move pawn to new location (doesn't update board)
+	 */
 	public void move(int[] newPosition) {
 		this.location = newPosition;
 		this.notMoved = false;
 	}
 	
+	/*
+	 * Checks to see if a capture move is legal
+	 */
 	public boolean legalAttack(int[] nextLoc) {
 		int[] prevLoc = this.location;
 		boolean isLegal = false;
@@ -65,12 +83,23 @@ public class Pawn extends Piece{
 	}
 
 
-	@Override
+	/*
+	 * Determines if move is blocked by another piece.
+	 */
 	public boolean isBlocked(int[] prevLoc, int[] nextLoc) {
-		// TODO Auto-generated method stub
+		if (Math.abs(nextLoc[0]-prevLoc[0])==2) {
+			if (prevLoc[0] > nextLoc[0]) {
+				return (board[nextLoc[0]+1][nextLoc[1]] != null);
+			} else {
+				return (board[nextLoc[0]-1][nextLoc[1]] != null);
+			}
+		}
 		return false;
 	}
 	
+	/*
+	 * Finds all possible legal moves
+	 */
 	public ArrayList<int[][]> possibleMoveLocations() {
 		ArrayList<int[][]> possMoves = new ArrayList<int[][]>();
 		int[][] currentMove;

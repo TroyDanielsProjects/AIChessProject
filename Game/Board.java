@@ -1,7 +1,18 @@
-
-
+package Game;
 import java.util.ArrayList;
 
+import Pieces.Bishop;
+import Pieces.King;
+import Pieces.Knight;
+import Pieces.Piece;
+import Pieces.Rook;
+import Pieces.Queen;
+import Pieces.Pawn;
+
+/*
+ * Class that represents a board or game. Has all Pieces and their location.
+ * Used to also make moves, determine legal moves and get feature array values
+ */
 public class Board {
 	
 	private Piece[][] board = new Piece[8][8];
@@ -10,6 +21,9 @@ public class Board {
 	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
 	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 	
+	/*
+	 * constructor that sets up the board - creates all pieces in their correct locations
+	 */
 	public Board() {
 		King whiteKing = this.whiteKing;
 		King blackKing = this.blackKing;
@@ -49,6 +63,9 @@ public class Board {
 		}
 	}
 	
+	/*
+	 * returns a players King
+	 */
 	public King getKing(boolean isWhite) {
 		if (isWhite) {
 			return this.whiteKing;
@@ -58,18 +75,30 @@ public class Board {
 		}
 	}
 	
+	/*
+	 * get all of black player's pieces
+	 */
 	public ArrayList<Piece> getBlackPieces(){
 		return this.blackPieces;
 	}
 	
+	/*
+	 * get all of white player's pieces
+	 */
 	public ArrayList<Piece> getWhitePieces(){
 		return this.whitePieces;
 	}
 	
+	/*
+	 * get a piece in a specific location
+	 */
 	public Piece getPiece(int[] location) {
 		return board[location[0]][location[1]];
 	}
 	
+	/*
+	 * Performs a castle maneuver. Doesn't check legality of it. must be used carefully.
+	 */
 	public void castle(int[] prevLoc, int[] nextLoc) {
 		if (prevLoc[1]==3 && (prevLoc[0] == 0 || prevLoc[0] ==7) && nextLoc[1]==1) {
 			board[prevLoc[0]][prevLoc[1]].move(nextLoc);
@@ -89,6 +118,9 @@ public class Board {
 		}
 	}
 	
+	/*
+	 * Moves a piece from one location to another. Doesn't check legality of piece.
+	 */
 	public void movePiece(int[] prevLoc, int[] nextLoc) {
 		if (board[nextLoc[0]][nextLoc[1]]!= null && board[nextLoc[0]][nextLoc[1]].isWhite) {
 			for (int i = 0; i<this.whitePieces.size();i++) {
@@ -108,23 +140,37 @@ public class Board {
 		board[nextLoc[0]][nextLoc[1]] = board[prevLoc[0]][prevLoc[1]];
 		board[prevLoc[0]][prevLoc[1]] = null;
 	}
-	// only for program use. Do Not use for player input
+	
+	/*
+	 * Moves a piece on the condition that it will be moved back
+	 * needed for checking permutations of alpha-beta tree
+	 * only for program use. Do Not use for player input
+	 */
 	public void unregisteredMovePiece(int[] prevLoc, int[] nextLoc) {
 		board[prevLoc[0]][prevLoc[1]].unregisteredMove(nextLoc);
 		board[nextLoc[0]][nextLoc[1]] = board[prevLoc[0]][prevLoc[1]];
 		board[prevLoc[0]][prevLoc[1]] = null;
 	}
 	
+	/*
+	 * getter for Board
+	 */
 	public Piece[][] getBoard(){
 		return this.board;
 	}
 	
-	
+	/*
+	 * Inserts a Piece in a specific location
+	 * mainly used for testing
+	 */
 	public void insertPiece(Piece piece, int[] loc) {
 		this.board[loc[0]][loc[1]] = piece;
 	}
 	
-	
+	/*
+	 * Checks to see if a position is being attacked by opposing player
+	 * used for feature vector
+	 */
 	public boolean isSquareBeingAttacked(boolean isWhite, int[] location) {
 		if (isWhite) {
 			for (int i =0; i<blackPieces.size();i++) {
@@ -147,7 +193,11 @@ public class Board {
 		}
 	}
 	
-	
+	/*
+	 * Checks to see which player is winning by comparing their pieces and their values
+	 * Q=9,R=5,B=3,K=3,P=1
+	 * used for feature vector
+	 */
 	public double peiceComparisonValueFunction(boolean isWhite) {
 		double value = 0;
 		
@@ -231,6 +281,9 @@ public class Board {
 		return value;
 	}
 	
+	/*
+	 * Override toString to show board as a console output
+	 */
 	public String toString() {
 		String stringToReturn= "";
 		stringToReturn+="\n\n";

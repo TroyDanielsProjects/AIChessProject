@@ -1,8 +1,14 @@
-
+package Players;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import Game.Board;
+import Pieces.Piece;
+import Pieces.Queen;
 
+/*
+ * Abstract class for every player to inherit. Gives basic functionality for turns and moves
+ */
 public abstract class Player {
 
 	protected ArrayList<Piece> myPieces;
@@ -13,6 +19,11 @@ public abstract class Player {
 	protected boolean isWhite;
 	
 	
+	/*
+	 * provides most of the functionality for a move. takes the location of the piece to move and where to move it and 
+	 * returns if the piece has actually moved in the game. The game will not move the piece if move is illegal
+	 * Do not use in actual game - helper function for playerMove
+	 */
 	public boolean makeMove(int[] prevLoc, int[] nextLoc) {
 		boolean hasMoved = false;
 		Piece possTakenPiece = board.getPiece(nextLoc);
@@ -37,11 +48,18 @@ public abstract class Player {
 		return hasMoved;
 	}
 	
+	/*
+	 * Make a move for a player. Returns if the move was legal and registered by the game.
+	 */
 	public boolean playerMove(Piece piece, int[] nextLoc) {
 		int[] prevLoc = piece.location;
 		return playerMove(prevLoc,nextLoc);
 	}
 	
+	/*
+	 * Make a move for a player with the intention of undoing the move later on. (move that doesn't actually change the state of the game)
+	 * used for Alpha-beta player
+	 */
 	public boolean makeUnregisteredMove(int[] prevLoc, int[] nextLoc) {
 		boolean hasMoved = false;
 		if (board.getPiece(prevLoc)== null) {
@@ -60,6 +78,10 @@ public abstract class Player {
 		return hasMoved;
 	}
 	
+	/*
+	 * Make a move for a player. Returns if the move was legal and registered by the game.
+	 * also will replace a pawn with a queen if it reaches the end.
+	 */
 	public boolean playerMove(int[] prevLoc, int[] nextLoc) {
 		boolean hasMoved = makeMove(prevLoc,nextLoc);
 		
@@ -72,6 +94,9 @@ public abstract class Player {
 		return hasMoved;
 	}
 	
+	/*
+	 * Replaces a end pawn to a queen
+	 */
 	public void replaceEndPawn(Piece piece) {
 		int locationToReplace=0;
 		for (int i =0; i< this.myPieces.size();i++) {
@@ -84,18 +109,26 @@ public abstract class Player {
 		this.board.insertPiece(newQueen, newQueen.location);
 	}
 	
-	
 	public boolean makeMove(Piece piece, int[] nextLoc) {
 		int[] prevLoc = piece.location;
 		return makeMove(prevLoc,nextLoc);
 	}
 	
+	/*
+	 * determines if the player is in check
+	 */
 	public boolean isInCheck() {
 		return board.isSquareBeingAttacked(this.isWhite,this.king.location);
 	}
 	
+	/*
+	 * implements all the functionality of the players turn
+	 */
 	public abstract void turn();
 	
+	/*
+	 * determines if the player is in checkmate
+	 */
 	public boolean checkmate() {
 		ArrayList<int[][]> makeableMoves = this.makeableMoves();
 		if (makeableMoves.size()==0) {
@@ -107,6 +140,9 @@ public abstract class Player {
 		
 	}
 	
+	/*
+	 * finds all of the makable moves for the player
+	 */
 	public ArrayList<int[][]> makeableMoves(){
 		ArrayList<int[][]> possibleMoves;
 		ArrayList<int[][]> makeableMoves = new ArrayList<int[][]>();

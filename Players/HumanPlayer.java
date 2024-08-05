@@ -1,7 +1,10 @@
+package Players;
 
-
+import Game.Board;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import Pieces.Piece;
 
 public class HumanPlayer extends Player {
 	

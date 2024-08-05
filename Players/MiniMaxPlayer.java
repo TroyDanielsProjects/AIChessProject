@@ -1,14 +1,20 @@
-
-
+package Players;
 import java.util.ArrayList;
+import Pieces.Piece;
 import java.util.ArrayList;
+import Game.Board;
 
+/*
+ * Represents the Alpha-Beta player
+ */
 public class MiniMaxPlayer extends Player {
 	
 	public Player otherPlayer;
 	
 	
-	
+	/*
+	 * constructor to make Alpha-Beta Player
+	 */
 	public MiniMaxPlayer(ArrayList<Piece> myPieces, Board board, String name, boolean isWhite, Player otherPlayer) {
 		
 		super.myPieces = myPieces;
@@ -19,16 +25,20 @@ public class MiniMaxPlayer extends Player {
 		this.otherPlayer = otherPlayer;
 	}
 	
+	/*
+	 * find the best move using the Alpha-beta search algorithm and make that move
+	 */
 	public void turn() {
-		MiniMaxReturn v = maxValue(0,-40,40);
+		MiniMaxReturn v = maxValue(3,-40,40);
 		System.out.println("the value is "+v.value);
-		boolean moveMade =makeMove(v.move[0], v.move[1]);
-//		if (!moveMade) {
-//			System.out.println("Error, no move made");
-//			System.out.println("the saved move is "+this.nextMove[0][0]+this.nextMove[0][1]+this.nextMove[1][0]+this.nextMove[1][1]);
-//		}
+		makeMove(v.move[0], v.move[1]);
 	}
 	
+	/*
+	 * sorts the possible moves by the player by putting attacking moves up top.
+	 * This is done because chances are attacking moves are preferable to other moves
+	 * because of pruning of the search tree, should speed up runtime.
+	 */
 	public void sortMoves(ArrayList<int[][]> moves) {
 		int swap = 0;
 		for (int i = 0; i< moves.size();i++) {
@@ -40,6 +50,10 @@ public class MiniMaxPlayer extends Player {
 		}
 	}
 	
+	/*
+	 * Alpha-beta search algorithm. Finds the best move based on the features selected in the tree created with 
+	 * depth passed in.
+	 */
 	public MiniMaxReturn maxValue(int depth,double alpha,double beta) {
 		MiniMaxReturn objectToReturn = new MiniMaxReturn();
 		ArrayList<int[][]> moves = this.makeableMoves();
@@ -93,7 +107,10 @@ public class MiniMaxPlayer extends Player {
 		}
 	}
 	
-	
+	/*
+	 * Used by maxValue to try and mimic the best moves for the opposing player based on the features selected.
+	 * So that the best move can be found by maxValue
+	 */
 	public MiniMaxReturn minValue(int depth,double alpha,double beta) {
 		MiniMaxReturn objectToReturn = new MiniMaxReturn();
 		if (checkmate()) {

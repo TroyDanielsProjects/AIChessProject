@@ -1,11 +1,20 @@
-
-
+package Pieces;
 import java.util.ArrayList;
 
+import Pieces.King;
+import Pieces.Piece;
+
+
+/*
+ * represents the Rook piece and its movements
+ */
 public class Rook extends Piece{
 	public boolean isKingSide;
 	public King myKing;
 	
+	/*
+	 * Constructor for Rook Piece
+	 */
 	public Rook(boolean isWhite, int[] currLocation, King king, Piece[][] board) {
 		super.isWhite = isWhite;
 		super.name = "R";
@@ -21,7 +30,10 @@ public class Rook extends Piece{
 		}
 	}
 
-	@Override
+	/*
+	 * Override method to set what movements are possible for the Rook. Only looks at movement
+	 * and not circumstance (for example if pieces block movement)
+	 */
 	public boolean legalMove(int[] prevLoc, int[] nextLoc) {
 		boolean isLegal = false;
 		if (board[prevLoc[0]][prevLoc[1]]==null) {
@@ -42,6 +54,10 @@ public class Rook extends Piece{
 		return isLegal;
 	}
 	
+	/*
+	 * Checks to see if a piece exists between original position and where it moved to.
+	 * Making it a illegal move (boolean - true = illegal move)
+	 */
 	public boolean isBlocked(int[] prevLoc, int[] nextLoc) {
 		int[] tempLoc = nextLoc.clone();
 		if ( nextLoc[0]-prevLoc[0]>0 ) {
@@ -75,7 +91,10 @@ public class Rook extends Piece{
 		}
 		return false;
 	}
-
+	
+	/*
+	 * moves the Rook (but not on the board)
+	 */
 	public void move(int[] newPosition) {
 		if (!this.isKingSide) {
 			this.myKing.canCastleQueenSide = false;
@@ -86,7 +105,9 @@ public class Rook extends Piece{
 		this.location = newPosition;
 	}
 	
-	@Override
+	/*
+	 * Finds all possible legal moves
+	 */
 	public ArrayList<int[][]> possibleMoveLocations() {
 		ArrayList<int[][]> possMoves = new ArrayList<int[][]>();
 		int currRow = this.location[0]+1;
